@@ -37,7 +37,7 @@ COPY . .
 # Installe les dépendances PHP
 RUN composer install --optimize-autoloader --no-dev \
     && npm install \
-    && npm run build  # Compile les assets front-end (Vite/Webpack)\
+    && npm run build  # Compile les assets front-end (Vite/Webpack)
 
 # Stage 2 : Production Image
 FROM php:8.2-fpm-alpine
