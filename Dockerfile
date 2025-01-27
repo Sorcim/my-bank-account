@@ -17,7 +17,10 @@ RUN apk add --no-cache \
     g++ \
     make \
     autoconf \
-    openssl-dev
+    openssl-dev \
+    nodejs \
+    npm
+
 
 # Configuration des extensions PHP nécessaires
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -32,7 +35,9 @@ WORKDIR /var/www
 COPY . .
 
 # Installe les dépendances PHP
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --optimize-autoloader --no-dev \
+    && npm install \
+    && npm run build  # Compile les assets front-end (Vite/Webpack)\
 
 # Stage 2 : Production Image
 FROM php:8.2-fpm-alpine
@@ -52,9 +57,10 @@ WORKDIR /var/www
 COPY --from=build /var/www /var/www
 
 # Configuration utilisateur
-RUN adduser -D -S -G www-data www-data
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+RUN addgroup -g 82 -S www-data \
+    && adduser -u 82 -D -S -G www-data www-data \
+    && chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache \
 
 # Expose le port pour PHP-FPM
 EXPOSE 9000
