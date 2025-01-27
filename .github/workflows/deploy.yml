@@ -1,0 +1,19 @@
+name: Deploy app
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url:  ${{ secrets.URL_WEBHOOK }}
+          method: 'POST'
+          bearerToken: ${{ secrets.TOKEN_WEBHOOK }}
