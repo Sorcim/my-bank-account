@@ -56,12 +56,12 @@ RUN apk add --no-cache \
 WORKDIR /var/www
 COPY --from=build /var/www /var/www
 
-# Configuration utilisateur
-RUN addgroup -g 82 -S www-data \
-    && adduser -u 82 -D -S -G www-data www-data \
-    && chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+# Créer les répertoires nécessaires
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache
 
+# Assurer les permissions sur les répertoires
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 # Expose le port pour PHP-FPM
 EXPOSE 9000
 
