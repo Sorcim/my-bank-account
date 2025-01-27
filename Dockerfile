@@ -60,7 +60,7 @@ COPY --from=build /var/www /var/www
 RUN addgroup -g 82 -S www-data \
     && adduser -u 82 -D -S -G www-data www-data \
     && chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
 # Expose le port pour PHP-FPM
 EXPOSE 9000
