@@ -1,12 +1,10 @@
 name: Deploy app
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
+  workflow_run:
+    workflows:
+      - Build and Push Docker Image
+    types:
+      - completed
 jobs:
   deployment:
     runs-on: ubuntu-latest
