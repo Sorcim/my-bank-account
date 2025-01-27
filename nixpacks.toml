@@ -1,5 +1,9 @@
 [phases.setup]
 nixPkgs = ["...", "python311Packages.supervisor"]
+commands = [
+    "chmod -R 775 /app/storage /app/bootstrap/cache",
+    "chown -R www-data:www-data /app/storage /app/bootstrap/cache"
+]
 
 [phases.build]
 cmds = [
