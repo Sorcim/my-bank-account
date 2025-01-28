@@ -52,6 +52,9 @@ RUN apk add --no-cache \
     icu \
     openssl
 
+# Configurer PHP-FPM pour éviter les conflits
+RUN sed -i 's/^listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
+
 # Copie l'intégralité du projet depuis le build
 WORKDIR /var/www
 COPY --from=build /var/www /var/www
