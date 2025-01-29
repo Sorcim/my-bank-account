@@ -28,6 +28,6 @@ class CreateTransactionFromImageUseCase
         );
 
         // Sauvegarder la transaction
-        return $this->transactionRepository->createTransaction($transaction);
+        return $this->transactionRepository->create($transaction);
     }
 }
