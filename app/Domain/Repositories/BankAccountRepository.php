@@ -2,13 +2,14 @@
 
 namespace App\Domain\Repositories;
 
-use App\Domain\DTOs\CreateBankAccountDTO;
-use App\Domain\DTOs\EditBankAccountDTO;
+use App\Domain\Entities\BankAccount;
+use App\Domain\Entities\PaginatedBankAccountSummary;
 
 interface BankAccountRepository
 {
-    public function findAllByUser(string $userId): array;
-    public function create(CreateBankAccountDTO $payload): bool;
-    public function update(string $id, EditBankAccountDTO $data): bool;
+    public function findAllByUser(string $userId, int $page, int $perPage = 12): PaginatedBankAccountSummary;
+    public function create(BankAccount $bankAccount): bool;
+    public function update(BankAccount $bankAccount): bool;
     public function delete(string $id): bool;
+    public function get(string $bankAccountId): ?BankAccount;
 }

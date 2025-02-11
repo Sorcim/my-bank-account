@@ -2,16 +2,20 @@
 
 namespace App\Domain\Repositories;
 
-use App\Domain\DTOs\CreateTransactionDTO;
-use App\Domain\DTOs\EditTransactionDto;
+use App\Domain\Entities\PaginatedTransactions;
+use App\Domain\Entities\Transaction;
 
 interface TransactionRepository
 {
-    public function getListTransactionsForBankAccount(string $bankAccountId): array;
+    public function get(string $transactionId): Transaction;
 
-    public function create(CreateTransactionDto $createTransactionDto): bool;
+    public function getListTransactionsForBankAccount(string $bankAccountId, ?int $limit): array;
 
-    public function delete(string $transactionId): bool;
+    public function findPaginatedByBankAccountId(string $bankAccountId, int $perPage, int $page): PaginatedTransactions;
 
-    public function update(string $transactionId, EditTransactionDto $editTransactionDto): bool;
+    public function create(Transaction $transaction): bool;
+
+    public function delete(Transaction $transaction): bool;
+
+    public function update(Transaction $transaction): bool;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Domain\UseCases\Category;
 
-use App\Domain\DTOs\EditCategoryDTO;
+use App\Domain\Entities\Category;
 use App\Domain\Repositories\CategoryRepository;
 
 class EditCategoryUseCase
@@ -11,8 +11,13 @@ class EditCategoryUseCase
     public function __construct(private CategoryRepository $categoryRepository)
     {}
 
-    public function execute(string $id, EditCategoryDTO $data): bool
+    public function execute(Category $category): bool
     {
-        return $this->categoryRepository->update($id, $data);
+        return $this->categoryRepository->update($category);
+    }
+
+    public function getCategory(int $id): Category
+    {
+        return $this->categoryRepository->get($id);
     }
 }

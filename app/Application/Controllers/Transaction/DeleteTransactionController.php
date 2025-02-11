@@ -14,7 +14,8 @@ class DeleteTransactionController
 
     public function execute(string $transactionId): RedirectResponse
     {
-        $this->deleteTransactionUseCase->execute($transactionId);
+        $transaction = $this->deleteTransactionUseCase->getTransaction($transactionId);
+        $this->deleteTransactionUseCase->execute($transaction);
 
         return back()->with('success', 'Transaction deleted successfully');
     }

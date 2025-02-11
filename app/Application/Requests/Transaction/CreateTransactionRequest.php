@@ -13,6 +13,7 @@ class CreateTransactionRequest extends FormRequest
             'amount' => 'required|numeric',
             'description' => 'required|string',
             'effective_at' => 'required|date',
+            'category_id' => 'exists:categories,id|nullable',
         ];
     }
 

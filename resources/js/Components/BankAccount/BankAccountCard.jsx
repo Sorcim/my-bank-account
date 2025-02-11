@@ -5,6 +5,7 @@ import BankAccountDeleteForm from "./BankAccountDeleteForm.jsx";
 import BankAccountEditForm from "./BankAccountEditForm.jsx";
 import {Link} from "@inertiajs/react";
 import Amount from "../Amount.jsx";
+import Time from "../Time.jsx";
 
 
 
@@ -53,13 +54,13 @@ const BankAccountCard = ({bankAccount}) => {
                 <div className="flex justify-between gap-x-4 py-3">
                     <dt className="text-gray-500">Total sur le compte</dt>
                     <dd className="flex items-start gap-x-2">
-                        <div className="font-medium text-gray-900"><Amount amount={bankAccount.current_balance}/></div>
+                        <div className="font-medium text-gray-900"><Amount amount={bankAccount.currentBalance}/></div>
                     </dd>
                 </div>
                 <div className="flex justify-between gap-x-4 py-3">
                     <dt className="text-gray-500">Dernière transaction</dt>
                     <dd className="text-gray-700">
-                        {bankAccount.latest_transaction && (<time dateTime={bankAccount.latest_transaction.effective_at}>{bankAccount.latest_transaction.effective_at}</time>)}
+                        <Time date={bankAccount.lastTransactionDate?.date} />
                     </dd>
                 </div>
             </dl>

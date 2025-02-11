@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Persistence;
 
+use App\Domain\Entities\Transaction;
 use Database\Factories\BankAccountModelFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,19 +43,16 @@ class BankAccountModel extends Model
         return $this->hasMany(TransactionModel::class, 'bank_account_id');
     }
 
-//    protected function startBalance(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn (string $value) => $value / 100,
-//            set: fn (string $value) => (int) round($value * 100)
-//        );
-//    }
-
-    public function latestTransaction(): HasOne
+    public function latestTransactionDate()
     {
-        return $this->hasOne(TransactionModel::class, 'bank_account_id')->latestOfMany();
+        $transaction = $this->hasOne(TransactionModel::class, 'bank_account_id')->latest('effective_at')->first();
+        return $transaction ? new \DateTimeImmutable($transaction->effective_at) : null;
     }
-
+    public function currentBalance(): int
+    {
+        return $this->start_balance +
+            (int) $this->transactions()->sum('amount');
+    }
     protected static function newFactory(): BankAccountModelFactory
     {
         return BankAccountModelFactory::new();

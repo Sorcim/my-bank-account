@@ -2,7 +2,7 @@
 
 namespace App\Domain\UseCases\BankAccount;
 
-use App\Domain\DTOs\CreateBankAccountDTO;
+use App\Domain\Entities\BankAccount;
 use App\Domain\Repositories\BankAccountRepository;
 
 class CreateBankAccount
@@ -11,8 +11,8 @@ class CreateBankAccount
     public function __construct(private readonly BankAccountRepository $bankAccountRepository)
     {}
 
-    public function execute(CreateBankAccountDTO $payload): bool
+    public function execute(BankAccount $bankAccount): bool
     {
-        return $this->bankAccountRepository->create( $payload );
+        return $this->bankAccountRepository->create( $bankAccount );
     }
 }

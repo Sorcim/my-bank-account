@@ -13,6 +13,7 @@ class EditTransactionRequest extends FormRequest
             'amount' => 'numeric',
             'effective_at' => 'date',
             'checked' => 'boolean',
+            'category_id' => 'exists:categories,id',
         ];
     }
 

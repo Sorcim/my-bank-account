@@ -2,7 +2,7 @@
 
 namespace App\Application\Controllers\BankAccount;
 
-use App\Application\Presenters\BankAccountPresenter;
+use App\Application\Presenters\PaginatedBankAccountSummaryPresenter;
 use App\Domain\UseCases\BankAccount\ListBankAccountForUser;
 use Inertia\Inertia;
 
@@ -14,11 +14,9 @@ class ListBankAccountController
 
     public function render()
     {
-        $bankAccounts = $this->listBankAccountForUser->execute(auth()->id());
-        $presenter = new BankAccountPresenter($bankAccounts);
-
+        $paginatedBankAccounts = $this->listBankAccountForUser->execute(auth()->id());
         return Inertia::render('Home', [
-            'bankAccounts' => $presenter->toHomeResponse()
+            'paginatedBankAccounts' => new PaginatedBankAccountSummaryPresenter($paginatedBankAccounts),
         ]);
     }
 }

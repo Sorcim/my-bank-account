@@ -2,7 +2,7 @@
 
 namespace App\Domain\UseCases\Transaction;
 
-use App\Domain\DTOs\EditTransactionDto;
+use App\Domain\Entities\Transaction;
 use App\Domain\Repositories\TransactionRepository;
 
 class EditTransactionUseCase
@@ -12,8 +12,13 @@ class EditTransactionUseCase
     {
     }
 
-    public function execute(string $transactionId, EditTransactionDto $editTransactionDto)
+    public function execute(Transaction $transaction)
     {
-        return $this->transactionRepository->update($transactionId, $editTransactionDto);
+        return $this->transactionRepository->update($transaction);
+    }
+
+    public function getTransaction(string $transactionId): ?Transaction
+    {
+        return $this->transactionRepository->get($transactionId);
     }
 }

@@ -2,69 +2,53 @@
 
 namespace App\Infrastructure\Repositories\Eloquent;
 
-use App\Domain\DTOs\CreateBankAccountDTO;
-use App\Domain\DTOs\EditBankAccountDTO;
 use App\Domain\Entities\BankAccount;
-use App\Domain\Entities\Transaction;
+use App\Domain\Entities\PaginatedBankAccountSummary;
 use App\Domain\Repositories\BankAccountRepository;
+use App\Infrastructure\Mappers\BankAccountMapper;
+use App\Infrastructure\Mappers\BankAccountSummaryMapper;
 use App\Infrastructure\Persistence\BankAccountModel;
-use App\Infrastructure\Persistence\UserModel;
 
 class EloquentBankAccountRepository implements BankAccountRepository
 {
 
-    public function findAllByUser(string $userId): array
+    public function findAllByUser(string $userId, int $page, int $perPage = 12): PaginatedBankAccountSummary
     {
-        $bankAccounts = BankAccountModel::with(['transactions'])->get();
+        $paginator = BankAccountModel::where('user_id', $userId)
+            ->paginate($perPage, ['*'], 'page', $page);
 
-        return $bankAccounts->map(function ($bankAccount) {
-            $account = new BankAccount(
-                $bankAccount->id,
-                $bankAccount->name,
-                $bankAccount->start_balance,
-                auth()->user()->id
-            );
+        $bankAccounts = $paginator->map(fn ($bankAccount) => BankAccountSummaryMapper::toEntity($bankAccount))->toArray();
 
-            foreach ($bankAccount->transactions as $transaction) {
-                $account->addTransaction(
-                    new Transaction(
-                        $transaction->id,
-                        $transaction->bank_account_id,
-                        $transaction->amount,
-                        $transaction->description,
-                        new \DateTimeImmutable($transaction->date)
-                    )
-                );
-            }
-
-            return $account;
-        })->toArray();
+        return new PaginatedBankAccountSummary(
+            $bankAccounts,
+            $paginator->currentPage(),
+            $paginator->lastPage(),
+            $paginator->perPage(),
+            $paginator->total()
+        );
     }
 
-    public function create(CreateBankAccountDTO $payload): bool
+    public function create(BankAccount $bankAccount): bool
     {
-        $bankAccount = new BankAccountModel();
-        $bankAccount->name = $payload->name;
-        $bankAccount->start_balance = $payload->startBalance;
-        $user = UserModel::find($payload->userId);
-        $bankAccount->user()->associate($user);
-        return $bankAccount->save();
+        return BankAccountModel::create(BankAccountMapper::toModel($bankAccount))->save();
     }
 
-    public function update(string $id, EditBankAccountDTO $data): bool
+    public function update(BankAccount $bankAccount): bool
     {
-        $bankAccount = BankAccountModel::find($id);
-        if (!is_null($bankAccount->name)) {
-            $bankAccount->name = $data->name;
-        }
-        if (!is_null($bankAccount->start_balance)) {
-            $bankAccount->start_balance = $data->startBalance;
-        }
-        return $bankAccount->save();
+        return BankAccountModel::where('id', $bankAccount->id)->update(BankAccountMapper::toModel($bankAccount));
     }
 
     public function delete(string $id): bool
     {
         return BankAccountModel::destroy($id);
+    }
+
+    public function get(string $bankAccountId): ?BankAccount
+    {
+        $bankAccountModel = BankAccountModel::where('id' , $bankAccountId)->first();
+        if (is_null($bankAccountModel)) {
+            return null;
+        }
+        return BankAccountMapper::toEntity($bankAccountModel);
     }
 }

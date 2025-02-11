@@ -3,21 +3,24 @@
 namespace App\Application\Controllers\BankAccount;
 
 use App\Application\Requests\BankAccount\EditBankAccountRequest;
-use App\Domain\DTOs\EditBankAccountDTO;
+use App\Application\Services\BankAccountUpdater;
 use App\Domain\UseCases\BankAccount\EditBankAccount;
 
 class EditBankAccountController
 {
 
-    public function __construct(private EditBankAccount $editBankAccount)
+    public function __construct(private EditBankAccount $editBankAccount, private BankAccountUpdater $bankAccountUpdater)
     {
     }
 
     public function execute(string $id, EditBankAccountRequest $request)
     {
-        $payload = $request->validated();
-        $editBankAccountDTO = new EditBankAccountDTO($payload['name'], $payload['start_balance']);
-        $this->editBankAccount->execute($id, $editBankAccountDTO);
+        $request->validated();
+        $bankAccount = $this->editBankAccount->getBankAccountById($id);
+        if (!$bankAccount) {
+            throw new \Exception("Bank account not found");
+        }
+        $this->editBankAccount->execute($this->bankAccountUpdater->update($bankAccount, $request->all()));
         return back();
     }
 }

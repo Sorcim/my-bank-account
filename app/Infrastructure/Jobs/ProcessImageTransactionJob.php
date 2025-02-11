@@ -2,14 +2,14 @@
 
 namespace App\Infrastructure\Jobs;
 
-use App\Domain\UseCases\Transaction\CreateTransactionFromImageUseCase;
+use App\Domain\UseCases\Transaction\ProcessTransactionFromImageUseCase;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessImageAndCreateTransaction implements ShouldQueue
+class ProcessImageTransactionJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -22,7 +22,8 @@ class ProcessImageAndCreateTransaction implements ShouldQueue
         $this->imagePath = $imagePath;
     }
 
-    public function handle(CreateTransactionFromImageUseCase $createTransactionFromImageUseCase) {
-        $createTransactionFromImageUseCase->execute($this->bankAccountId, $this->imagePath);
+    public function handle(ProcessTransactionFromImageUseCase $processTransactionFromImageUseCase): void
+    {
+        $processTransactionFromImageUseCase->execute($this->bankAccountId, $this->imagePath);
     }
 }

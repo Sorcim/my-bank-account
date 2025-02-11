@@ -3,7 +3,7 @@
 namespace App\Application\Controllers\BankAccount;
 
 use App\Application\Requests\BankAccount\CreateBankAccountRequest;
-use App\Domain\DTOs\CreateBankAccountDTO;
+use App\Domain\Factories\BankAccountFactory;
 use App\Domain\UseCases\BankAccount\CreateBankAccount;
 
 class CreateBankAccountController
@@ -16,8 +16,7 @@ class CreateBankAccountController
     public function execute(CreateBankAccountRequest $request)
     {
         $payload = $request->validated();
-        $createBankAccountDTO = new CreateBankAccountDTO($payload['name'], $payload['start_balance'], auth()->id());
-        $this->createBankAccount->execute($createBankAccountDTO);
+        $this->createBankAccount->execute(BankAccountFactory::create($payload['name'], $payload['start_balance'], auth()->id()));
         return back();
     }
 }

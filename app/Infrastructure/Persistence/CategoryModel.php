@@ -23,6 +23,6 @@ class CategoryModel extends Model
 
     public function transactions(): HasMany
     {
-        return $this->hasMany(TransactionModel::class, 'category_id');
+        return $this->hasMany(TransactionModel::class);
     }
 }

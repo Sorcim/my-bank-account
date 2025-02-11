@@ -3,20 +3,24 @@
 namespace App\Application\Controllers\Transaction;
 
 use App\Application\Requests\Transaction\CreateTransactionFromImageRequest;
-use App\Infrastructure\Jobs\ProcessImageAndCreateTransaction;
+use App\Domain\UseCases\Transaction\RequestTransactionFromImageUseCase;
 
 class CreateTransactionFromImageController
 {
+
+
+    public function __construct(private RequestTransactionFromImageUseCase $requestTransactionFromImageUseCase)
+    {
+    }
+
     public function execute(CreateTransactionFromImageRequest $request)
     {
         $request->validated();
-
+        $paths = [];
         foreach ($request->images as $image) {
-            $imagePath = $image->store('receipts');
-
-            ProcessImageAndCreateTransaction::dispatch($request->get('bank_account_id'), $imagePath);
+            $paths[] = $image->store('receipts');
         }
-
+        $this->requestTransactionFromImageUseCase->execute($paths, $request->get('bank_account_id'));
         return back()->with('success', 'Transaction created successfully');
     }
 

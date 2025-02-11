@@ -1,10 +1,9 @@
 import BaseLayout from "../Layout/BaseLayout";
 import BankAccountCard from "../Components/BankAccount/BankAccountCard.jsx";
 import BankAccountAddButton from "../Components/BankAccount/BankAccountAddButton.jsx";
-import {usePage} from "@inertiajs/react";
 
-const Home = () =>{
-    const { bankAccounts } = usePage().props
+const Home = ({paginatedBankAccounts}) =>{
+    console.log(paginatedBankAccounts);
     return (
         <>
             <div className="flex items-center justify-between">
@@ -12,7 +11,7 @@ const Home = () =>{
                 <BankAccountAddButton/>
             </div>
             <ul role="list" className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-                {bankAccounts.map((bankAccount) => (
+                {paginatedBankAccounts.bankAccounts.map((bankAccount) => (
                     <BankAccountCard key={bankAccount.id} bankAccount={bankAccount}/>
                 ))}
             </ul>

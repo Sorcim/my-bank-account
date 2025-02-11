@@ -2,7 +2,7 @@
 
 namespace App\Domain\UseCases\Category;
 
-use App\Domain\DTOs\CreateCategoryDTO;
+use App\Domain\Entities\Category;
 use App\Domain\Repositories\CategoryRepository;
 
 class CreateCategoryUseCase
@@ -11,8 +11,8 @@ class CreateCategoryUseCase
     public function __construct(private CategoryRepository $categoryRepository)
     {}
 
-    public function execute(CreateCategoryDTO $createCategoryDTO)
+    public function execute(Category $category)
     {
-        return $this->categoryRepository->create($createCategoryDTO);
+        return $this->categoryRepository->create($category);
     }
 }

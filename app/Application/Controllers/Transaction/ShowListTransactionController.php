@@ -2,23 +2,29 @@
 
 namespace App\Application\Controllers\Transaction;
 
-use App\Application\Presenters\ListTransactionPresenter;
-use App\Domain\UseCases\Transaction\ShowListTransaction;
+use App\Application\Presenters\PaginatedTransactionsPresenter;
+use App\Domain\Repositories\CategoryRepository;
+use App\Domain\UseCases\Transaction\ShowPaginatedTransactionsUseCase;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ShowListTransactionController
 {
-    public function __construct(private ShowListTransaction $showListTransaction)
-    {
-    }
+    public function __construct(
+        private ShowPaginatedTransactionsUseCase $showPaginatedTransactionsUseCase,
+        private CategoryRepository $categoryRepository)
+    {}
 
-    public function render(string $bankAccountId)
+    public function render(Request $request, string $bankAccountId)
     {
-        $transactions = $this->showListTransaction->execute($bankAccountId);
-        $presentedTransactions = new ListTransactionPresenter($transactions);
+        $page = $request->query('page', 1);
+        $transactions = $this->showPaginatedTransactionsUseCase->execute($bankAccountId, 10, $page);
+        $categories = $this->categoryRepository->all(auth()->id());
+        $presentedTransactions = new PaginatedTransactionsPresenter($transactions);
         return Inertia::render('Transactions/ListTransaction', [
-            'transactions' => $presentedTransactions->toInertia(),
+            'paginatedTransactions' => $presentedTransactions,
             'bankAccountId' => $bankAccountId,
+            'categories' => $categories,
         ]);
     }
 }

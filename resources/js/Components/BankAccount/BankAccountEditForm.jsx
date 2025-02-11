@@ -8,7 +8,7 @@ const BankAccountEditForm = ({ bankAccount }) => {
     const {displayNotification} = useNotification();
     const { data, setData, patch} = useForm({
         name: bankAccount.name,
-        start_balance: bankAccount.start_balance
+        start_balance: bankAccount.startBalance
     })
 
     const handleSubmit = (e) => {

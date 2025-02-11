@@ -2,9 +2,9 @@
 
 namespace App\Domain\Services;
 
-use App\Domain\DTOs\ImageProcessingDTO;
+use App\Application\DTOs\ImageProcessingDTO;
 
-interface ImageProcessingService
+interface ImageProcessingInterface
 {
     public function extractDataFromImage(string $imagePath): ImageProcessingDTO;
 }

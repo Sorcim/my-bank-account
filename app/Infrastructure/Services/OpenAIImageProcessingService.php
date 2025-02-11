@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Services;
 
-use App\Domain\DTOs\ImageProcessingDTO;
-use App\Domain\Services\ImageProcessingService;
+use App\Application\DTOs\ImageProcessingDTO;
+use App\Domain\Services\ImageProcessingInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class OpenAIImageProcessingService implements ImageProcessingService
+class OpenAIImageProcessingService implements ImageProcessingInterface
 {
     public function extractDataFromImage(string $imagePath): ImageProcessingDTO
     {
@@ -45,7 +45,10 @@ class OpenAIImageProcessingService implements ImageProcessingService
         $data = json_decode($cleanedContent, true);
 
         Log::info('Image processing succeeded', ['data' => $data]);
-
+        if (!$data){
+            Log::alert('Image processing failed', ['response' => $rawContent]);
+            throw new \Exception('Image processing failed');
+        }
         return new ImageProcessingDTO(
             $data['montant'],
             $data['emetteur'],

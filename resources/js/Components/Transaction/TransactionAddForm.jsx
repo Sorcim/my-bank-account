@@ -4,7 +4,7 @@ import {useModal} from "../../Contexts/ModalContext.jsx";
 import {useNotification} from "../../Contexts/NotificationContext.jsx";
 import {useRoute} from "ziggy-js";
 
-const TransactionAddForm = ({bankAccountId}) => {
+const TransactionAddForm = ({bankAccountId, categories}) => {
     const route = useRoute();
     const {closeModal} = useModal();
     const {displayNotification} = useNotification();
@@ -13,8 +13,8 @@ const TransactionAddForm = ({bankAccountId}) => {
         description: '',
         amount: 0,
         effective_at: new Date().toISOString().split('T')[0],
+        category_id: ''
     })
-
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route('transaction.create'), {
@@ -73,7 +73,7 @@ const TransactionAddForm = ({bankAccountId}) => {
                             htmlFor="effective_at"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Montant
+                            Date
                         </label>
                         <input
                             type="date"
@@ -83,6 +83,23 @@ const TransactionAddForm = ({bankAccountId}) => {
                             onChange={e => setData('effective_at', e.target.value)}
                             required
                         />
+                    </div>
+                    <div>
+                    <label
+                        htmlFor="category"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Catégorie
+                    </label>
+                        <select name="category" id="category" onChange={event => setData('category_id', event.target.value)}>
+                            <option value=""></option>
+                            {categories.map(category => {
+                                return (
+                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                )
+                            }
+                            )}
+                        </select>
                     </div>
                     <div>
                         <button

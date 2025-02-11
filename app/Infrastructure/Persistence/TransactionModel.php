@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Persistence;
 
 use Database\Factories\TransactionModelFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +18,8 @@ class TransactionModel extends Model
         'description',
         'effective_at',
         'bank_account_id',
-        'checked'
+        'checked',
+        'category_id'
     ];
 
     public function bankAccount(): BelongsTo
@@ -27,12 +27,9 @@ class TransactionModel extends Model
         return $this->belongsTo(BankAccountModel::class, 'bank_account_id');
     }
 
-    protected function amount(): Attribute
+    public function category(): BelongsTo
     {
-        return Attribute::make(
-            get: fn (string $value) => $value / 100,
-            set: fn (string $value) => (int) round($value * 100)
-        );
+        return $this->belongsTo(CategoryModel::class, 'category_id');
     }
 
     protected static function newFactory(): TransactionModelFactory

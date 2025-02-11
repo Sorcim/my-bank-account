@@ -3,7 +3,7 @@
 namespace App\Application\Controllers\Category;
 
 use App\Application\Requests\Category\CreateCategoryRequest;
-use App\Domain\DTOs\CreateCategoryDTO;
+use App\Domain\Factories\CategoryFactory;
 use App\Domain\UseCases\Category\CreateCategoryUseCase;
 
 class CreateCategoryController
@@ -15,8 +15,7 @@ class CreateCategoryController
     public function execute(CreateCategoryRequest $request)
     {
        $request->validated();
-       $dto = new CreateCategoryDTO($request->get('name'), $request->get('color'), auth()->id());
-       $this->createCategoryUseCase->execute($dto);
+       $this->createCategoryUseCase->execute(CategoryFactory::create($request->get('name'), $request->get('color'), auth()->id()));
        return back()->with('success', 'Category created successfully');
     }
 }
