@@ -7,10 +7,7 @@ use Illuminate\Http\RedirectResponse;
 
 class DeleteTransactionController
 {
-
-    public function __construct(private DeleteTransactionUseCase $deleteTransactionUseCase)
-    {
-    }
+    public function __construct(private DeleteTransactionUseCase $deleteTransactionUseCase) {}
 
     public function execute(string $transactionId): RedirectResponse
     {

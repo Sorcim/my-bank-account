@@ -15,7 +15,7 @@ class EloquentTransactionRepository implements TransactionRepository
         $transactions = TransactionModel::where('bank_account_id', $bankAccountId)
             ->orderByDesc('effective_at');
 
-        if (!is_null($limit)) {
+        if (! is_null($limit)) {
             $transactions = $transactions->limit($limit);
         }
 
@@ -24,6 +24,7 @@ class EloquentTransactionRepository implements TransactionRepository
         $transactions->transform(function ($transaction) {
             return TransactionMapper::toEntity($transaction);
         });
+
         return $transactions->toArray();
     }
 
@@ -39,7 +40,7 @@ class EloquentTransactionRepository implements TransactionRepository
 
     public function update(Transaction $transaction): bool
     {
-        return TransactionModel::where('id', $transaction->id)->update(TransactionMapper::toModel($transaction));
+        return TransactionModel::find($transaction->id)->update(TransactionMapper::toModel($transaction));
     }
 
     public function findPaginatedByBankAccountId(string $bankAccountId, int $perPage, int $page): PaginatedTransactions
@@ -62,6 +63,7 @@ class EloquentTransactionRepository implements TransactionRepository
     public function get(string $transactionId): Transaction
     {
         $transaction = TransactionModel::find($transactionId);
+
         return TransactionMapper::toEntity($transaction);
-   }
+    }
 }

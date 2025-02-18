@@ -9,8 +9,7 @@ class DeleteTransactionUseCase
 {
     public function __construct(
         private TransactionRepository $transactionRepository
-    ) {
-    }
+    ) {}
 
     public function execute(Transaction $transaction): bool
     {
@@ -21,5 +20,4 @@ class DeleteTransactionUseCase
     {
         return $this->transactionRepository->get($transactionId);
     }
-
 }

@@ -10,14 +10,15 @@ class EloquentUserRepository implements UserRepository
 {
     public function findByMail(string $mail): ?User
     {
-         $user = UserModel::where('email', $mail)->first();
-            if (!$user) {
-                return null;
-            }
-            return new User(
-                $user->id,
-                $user->email,
-                $user->password
-            );
+        $user = UserModel::where('email', $mail)->first();
+        if (! $user) {
+            return null;
+        }
+
+        return new User(
+            $user->id,
+            $user->email,
+            $user->password
+        );
     }
 }

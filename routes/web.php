@@ -9,6 +9,10 @@ use App\Application\Controllers\Category\CreateCategoryController;
 use App\Application\Controllers\Category\DeleteCategoryController;
 use App\Application\Controllers\Category\EditCategoryController;
 use App\Application\Controllers\Category\ShowListCategoryController;
+use App\Application\Controllers\RecurringTransaction\CreateRecurringTransactionController;
+use App\Application\Controllers\RecurringTransaction\DeleteRecurringTransactionController;
+use App\Application\Controllers\RecurringTransaction\EditRecurringTransactionController;
+use App\Application\Controllers\RecurringTransaction\ShowListRecurringTransactionController;
 use App\Application\Controllers\Transaction\CreateTransactionController;
 use App\Application\Controllers\Transaction\CreateTransactionFromImageController;
 use App\Application\Controllers\Transaction\DeleteTransactionController;
@@ -43,5 +47,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/', [CreateCategoryController::class, 'execute'])->name('category.create');
         Route::patch('/{id}', [EditCategoryController::class, 'execute'])->name('category.patch');
         Route::delete('/{id}', [DeleteCategoryController::class, 'execute'])->name('category.delete');
+    });
+    Route::group(['prefix' => 'recurring'], function () {
+        Route::get('/', [ShowListRecurringTransactionController::class, 'render'])->name('recurring.list');
+        Route::post('/', [CreateRecurringTransactionController::class, 'execute'])->name('recurring.create');
+        Route::delete('/{id}', [DeleteRecurringTransactionController::class, 'execute'])->name('recurring.delete');
+        Route::patch('/{id}', [EditRecurringTransactionController::class, 'execute'])->name('recurring.patch');
     });
 });

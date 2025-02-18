@@ -10,16 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TransactionModel extends Model
 {
-    use HasUuids, HasFactory;
+    use HasFactory, HasUuids;
 
     protected $table = 'transactions';
+
     protected $fillable = [
         'amount',
         'description',
         'effective_at',
         'bank_account_id',
         'checked',
-        'category_id'
+        'category_id',
     ];
 
     public function bankAccount(): BelongsTo

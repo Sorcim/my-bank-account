@@ -2,8 +2,7 @@ import BaseLayout from "../Layout/BaseLayout";
 import BankAccountCard from "../Components/BankAccount/BankAccountCard.jsx";
 import BankAccountAddButton from "../Components/BankAccount/BankAccountAddButton.jsx";
 
-const Home = ({paginatedBankAccounts}) =>{
-    console.log(paginatedBankAccounts);
+const Home = ({paginatedBankAccounts}) => {
     return (
         <>
             <div className="flex items-center justify-between">

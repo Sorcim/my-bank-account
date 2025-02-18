@@ -11,10 +11,11 @@ class EloquentCategoryRepository implements CategoryRepository
 {
     public function get(string $id): ?Category
     {
-        $categoryModel = CategoryModel::where("id", $id)->first();
+        $categoryModel = CategoryModel::where('id', $id)->first();
         if (is_null($categoryModel)) {
             return null;
         }
+
         return CategoryMapper::toEntity($categoryModel);
     }
 
@@ -26,6 +27,7 @@ class EloquentCategoryRepository implements CategoryRepository
         $categories->transform(function ($category) {
             return CategoryMapper::toEntity($category);
         });
+
         return $categories->toArray();
     }
 
@@ -50,6 +52,7 @@ class EloquentCategoryRepository implements CategoryRepository
         $categories->transform(function ($category) {
             return CategoryMapper::toEntity($category);
         });
+
         return $categories->toArray();
     }
 }

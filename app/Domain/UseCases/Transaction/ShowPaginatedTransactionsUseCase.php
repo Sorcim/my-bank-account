@@ -6,8 +6,8 @@ use App\Domain\Entities\PaginatedTransactions;
 use App\Domain\Repositories\CategoryRepository;
 use App\Domain\Repositories\TransactionRepository;
 
-class ShowPaginatedTransactionsUseCase {
-
+class ShowPaginatedTransactionsUseCase
+{
     public function __construct(
         private TransactionRepository $transactionRepository,
         private CategoryRepository $categoryRepository
@@ -18,7 +18,7 @@ class ShowPaginatedTransactionsUseCase {
         $paginatedTransactions = $this->transactionRepository->findPaginatedByBankAccountId($bankAccountId, $perPage, $page);
 
         $categoryIds = array_unique(
-            array_filter(array_map(fn($t) => $t->categoryId, $paginatedTransactions->transactions))
+            array_filter(array_map(fn ($t) => $t->categoryId, $paginatedTransactions->transactions))
         );
 
         $categories = $this->categoryRepository->find($categoryIds);
@@ -34,9 +34,10 @@ class ShowPaginatedTransactionsUseCase {
                 : null;
 
             $transaction->category = $category;
+
             return $transaction;
         }, $paginatedTransactions->transactions);
 
-       return $paginatedTransactions;
+        return $paginatedTransactions;
     }
 }

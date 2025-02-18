@@ -11,7 +11,6 @@ use App\Infrastructure\Persistence\BankAccountModel;
 
 class EloquentBankAccountRepository implements BankAccountRepository
 {
-
     public function findAllByUser(string $userId, int $page, int $perPage = 12): PaginatedBankAccountSummary
     {
         $paginator = BankAccountModel::where('user_id', $userId)
@@ -45,10 +44,19 @@ class EloquentBankAccountRepository implements BankAccountRepository
 
     public function get(string $bankAccountId): ?BankAccount
     {
-        $bankAccountModel = BankAccountModel::where('id' , $bankAccountId)->first();
+        $bankAccountModel = BankAccountModel::where('id', $bankAccountId)->first();
         if (is_null($bankAccountModel)) {
             return null;
         }
+
         return BankAccountMapper::toEntity($bankAccountModel);
+    }
+
+    public function getAllByUserId(string $userId): array
+    {
+        $bankAccounts = BankAccountModel::where('user_id', $userId)->get();
+        $bankAccounts = $bankAccounts->map(fn ($bankAccount) => BankAccountMapper::toEntity($bankAccount));
+
+        return $bankAccounts->toArray();
     }
 }

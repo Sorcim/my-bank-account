@@ -2,6 +2,7 @@
 
 namespace App\Domain\Factories;
 
+use App\Domain\Entities\RecurringTransaction;
 use App\Domain\Entities\Transaction;
 use Ramsey\Uuid\Uuid;
 
@@ -45,6 +46,18 @@ class TransactionFactory {
             categoryId: null,
             checked: false,
             receiptPath: $imagePath,
+        );
+    }
+
+    public function fromRecurringTransaction(RecurringTransaction $recurringTransaction): Transaction
+    {
+        return new Transaction(
+            id: Uuid::uuid4()->toString(),
+            amount: $recurringTransaction->amount,
+            description: $recurringTransaction->description,
+            effectiveAt: new \DateTimeImmutable(),
+            bankAccountId: $recurringTransaction->bankAccountId,
+            categoryId: $recurringTransaction->categoryId,
         );
     }
 }

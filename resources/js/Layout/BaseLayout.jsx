@@ -1,9 +1,9 @@
-import { Fragment, useState } from 'react'
-import { Dialog, DialogPanel} from '@headlessui/react'
-import { Bars3Icon} from '@heroicons/react/20/solid'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import {Fragment, useState} from 'react'
+import {Dialog, DialogPanel} from '@headlessui/react'
+import {Bars3Icon} from '@heroicons/react/20/solid'
+import {XMarkIcon} from '@heroicons/react/24/outline'
 import {Link} from "@inertiajs/react";
-import { useRoute } from 'ziggy-js';
+import {useRoute} from 'ziggy-js';
 import Notification from "../Components/Notification/Notification.jsx";
 
 const BaseLayout = ({children}) => {
@@ -11,8 +11,9 @@ const BaseLayout = ({children}) => {
     const route = useRoute();
 
     const navigation = [
-        { name: 'Home', href: route('home') },
-        { name: 'Catégories', href: route('category.list') }
+        {name: 'Home', href: route('home')},
+        {name: 'Récurrences', href: route('recurring.list')},
+        {name: 'Catégories', href: route('category.list')}
     ]
 
     return (
@@ -22,7 +23,7 @@ const BaseLayout = ({children}) => {
                     <div className="flex flex-1 items-center gap-x-6">
                         <button type="button" onClick={() => setMobileMenuOpen(true)} className="-m-3 p-3 md:hidden">
                             <span className="sr-only">Open main menu</span>
-                            <Bars3Icon aria-hidden="true" className="size-5 text-gray-900" />
+                            <Bars3Icon aria-hidden="true" className="size-5 text-gray-900"/>
                         </button>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width={70}>
                             <g id="icons_without_caption" data-name="icons without caption">
