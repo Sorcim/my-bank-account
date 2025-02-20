@@ -1,23 +1,23 @@
 <?php
 
-use App\Application\Controllers\Authentication\LoginController;
-use App\Application\Controllers\BankAccount\CreateBankAccountController;
-use App\Application\Controllers\BankAccount\DeleteBankAccountController;
-use App\Application\Controllers\BankAccount\EditBankAccountController;
-use App\Application\Controllers\BankAccount\ListBankAccountController;
-use App\Application\Controllers\Category\CreateCategoryController;
-use App\Application\Controllers\Category\DeleteCategoryController;
-use App\Application\Controllers\Category\EditCategoryController;
-use App\Application\Controllers\Category\ShowListCategoryController;
-use App\Application\Controllers\RecurringTransaction\CreateRecurringTransactionController;
-use App\Application\Controllers\RecurringTransaction\DeleteRecurringTransactionController;
-use App\Application\Controllers\RecurringTransaction\EditRecurringTransactionController;
-use App\Application\Controllers\RecurringTransaction\ShowListRecurringTransactionController;
-use App\Application\Controllers\Transaction\CreateTransactionController;
-use App\Application\Controllers\Transaction\CreateTransactionFromImageController;
-use App\Application\Controllers\Transaction\DeleteTransactionController;
-use App\Application\Controllers\Transaction\EditTransactionController;
-use App\Application\Controllers\Transaction\ShowListTransactionController;
+use App\Application\Controllers\Web\Authentication\LoginController;
+use App\Application\Controllers\Web\BankAccount\CreateBankAccountController;
+use App\Application\Controllers\Web\BankAccount\DeleteBankAccountController;
+use App\Application\Controllers\Web\BankAccount\EditBankAccountController;
+use App\Application\Controllers\Web\BankAccount\ListBankAccountController;
+use App\Application\Controllers\Web\Category\CreateCategoryController;
+use App\Application\Controllers\Web\Category\DeleteCategoryController;
+use App\Application\Controllers\Web\Category\EditCategoryController;
+use App\Application\Controllers\Web\Category\ShowListCategoryController;
+use App\Application\Controllers\Web\RecurringTransaction\CreateRecurringTransactionController;
+use App\Application\Controllers\Web\RecurringTransaction\DeleteRecurringTransactionController;
+use App\Application\Controllers\Web\RecurringTransaction\EditRecurringTransactionController;
+use App\Application\Controllers\Web\RecurringTransaction\ShowListRecurringTransactionController;
+use App\Application\Controllers\Web\Transaction\CreateTransactionController;
+use App\Application\Controllers\Web\Transaction\CreateTransactionFromImageController;
+use App\Application\Controllers\Web\Transaction\DeleteTransactionController;
+use App\Application\Controllers\Web\Transaction\EditTransactionController;
+use App\Application\Controllers\Web\Transaction\ShowListTransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [LoginController::class, 'render'])->name('login');
