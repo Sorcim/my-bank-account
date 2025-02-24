@@ -50,4 +50,14 @@ class EloquentRecurringTransactionRepository implements RecurringTransactionRepo
 
         return RecurringTransactionMapper::toEntity($transaction);
     }
+
+    public function getRecurringTransactionToProcess(): array
+    {
+        $now = new \DateTimeImmutable;
+        $transactions = RecurringTransactionModel::where('next_processed_at', '=', $now->format('Y-m-d'))->get();
+
+        return $transactions->map(function (RecurringTransactionModel $transaction) {
+            return RecurringTransactionMapper::toEntity($transaction);
+        })->toArray();
+    }
 }

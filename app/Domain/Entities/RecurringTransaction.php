@@ -19,30 +19,22 @@ class RecurringTransaction
         public DateTimeImmutable $nextProcessedAt
     ) {}
 
-    public function shouldBeProcessed(DateTimeImmutable $now): bool
+    public function markAsProcessed(): void
     {
-        // Vérifie si la transaction doit être exécutée aujourd’hui
-        if ($this->endAt && $this->endAt < $now) {
-            return false; // Fin de la récurrence
-        }
+        $now = new DateTimeImmutable;
+        $this->lastProcessedAt = $now;
+        $this->nextProcessedAt = $this->calculateNextProcessedAt($now);
+    }
 
+    private function calculateNextProcessedAt(DateTimeImmutable $now): DateTimeImmutable
+    {
         $interval = match ($this->frequency) {
             'daily' => '+1 day',
             'weekly' => '+1 week',
             'monthly' => '+1 month',
             'yearly' => '+1 year',
-            default => null
         };
 
-        if (! $interval) {
-            return false;
-        }
-
-        return $this->lastProcessedAt === null || $this->lastProcessedAt->modify($interval) <= $now;
-    }
-
-    public function markAsProcessed(): void
-    {
-        $this->lastProcessedAt = new DateTimeImmutable;
+        return $now->modify($interval);
     }
 }

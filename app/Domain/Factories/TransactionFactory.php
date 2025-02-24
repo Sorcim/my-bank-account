@@ -6,8 +6,9 @@ use App\Domain\Entities\RecurringTransaction;
 use App\Domain\Entities\Transaction;
 use Ramsey\Uuid\Uuid;
 
-class TransactionFactory {
-    public static function create(int $amount, string $description, \DateTimeImmutable $effectiveAt, string $bankAccountId, string $categoryId = null, bool $checked = false, string $receiptPath = null): Transaction
+class TransactionFactory
+{
+    public static function create(int $amount, string $description, \DateTimeImmutable $effectiveAt, string $bankAccountId, ?string $categoryId = null, bool $checked = false, ?string $receiptPath = null): Transaction
     {
         return new Transaction(
             id: Uuid::uuid4()->toString(),
@@ -41,7 +42,7 @@ class TransactionFactory {
             id: Uuid::uuid4()->toString(),
             amount: 0,
             description: '',
-            effectiveAt: new \DateTimeImmutable(),
+            effectiveAt: new \DateTimeImmutable,
             bankAccountId: $bankAccountId,
             categoryId: null,
             checked: false,
@@ -49,13 +50,13 @@ class TransactionFactory {
         );
     }
 
-    public function fromRecurringTransaction(RecurringTransaction $recurringTransaction): Transaction
+    public static function fromRecurringTransaction(RecurringTransaction $recurringTransaction): Transaction
     {
         return new Transaction(
             id: Uuid::uuid4()->toString(),
             amount: $recurringTransaction->amount,
             description: $recurringTransaction->description,
-            effectiveAt: new \DateTimeImmutable(),
+            effectiveAt: $recurringTransaction->nextProcessedAt,
             bankAccountId: $recurringTransaction->bankAccountId,
             categoryId: $recurringTransaction->categoryId,
         );

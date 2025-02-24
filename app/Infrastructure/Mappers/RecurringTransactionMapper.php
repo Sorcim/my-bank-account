@@ -34,8 +34,8 @@ class RecurringTransactionMapper
             'start_at' => $recurringTransaction->startAt,
             'end_at' => $recurringTransaction->endAt,
             'frequency' => $recurringTransaction->frequency,
-            'lastProcessed_at' => $recurringTransaction->lastProcessedAt,
-            'nextProcessed_at' => $recurringTransaction->nextProcessedAt,
+            'last_processed_at' => $recurringTransaction->lastProcessedAt,
+            'next_processed_at' => $recurringTransaction->nextProcessedAt,
         ];
     }
 }

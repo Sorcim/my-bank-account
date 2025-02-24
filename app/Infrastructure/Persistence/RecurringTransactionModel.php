@@ -24,8 +24,8 @@ class RecurringTransactionModel extends Model
         'start_at',
         'end_at',
         'frequency',
-        'lastProcessed_at',
-        'nextProcessed_at',
+        'last_processed_at',
+        'next_processed_at',
         'category_id',
         'bank_account_id',
     ];

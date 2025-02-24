@@ -16,4 +16,6 @@ interface RecurringTransactionRepository
     public function delete(RecurringTransaction $recurringTransaction): bool;
 
     public function get(string $id): RecurringTransaction;
+
+    public function getRecurringTransactionToProcess(): array;
 }
